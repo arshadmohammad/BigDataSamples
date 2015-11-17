@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.mycom.bds</groupId>
+  <artifactId>bds-main</artifactId>  
+  <version>1.0.0</version>
+  <name>Big Data Samples Main</name>
+  <packaging>pom</packaging>
+  <url>https://github.com/arshadmohammad/BigDataSamples</url>  
+  <modules>
+    <module>bds-zookeeper</module>
+  </modules>
+</project>
