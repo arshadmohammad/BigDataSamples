@@ -1,11 +1,14 @@
 package com.mycom.bds.hdfs;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
 
 public class HdfsSample {
@@ -17,7 +20,16 @@ public class HdfsSample {
 		HdfsSample hdfsSample = new HdfsSample();
 		hdfsSample.init();
 		hdfsSample.create();
-		// hdfsSample.listFiles();
+		hdfsSample.listFiles();
+	}
+
+	private void listFiles() throws FileNotFoundException, IOException {
+		RemoteIterator<LocatedFileStatus> listFiles = dfs.listFiles(sampleRootPath, true);
+		while (listFiles.hasNext()) {
+			LocatedFileStatus type = listFiles.next();
+			System.out.println(type);
+			
+		}
 	}
 
 	private void init() throws IOException {
