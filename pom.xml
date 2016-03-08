@@ -8,6 +8,9 @@
   <packaging>pom</packaging>
   <url>https://github.com/arshadmohammad/BigDataSamples</url>  
   <modules>
+    <module>bds-common</module>
     <module>bds-zookeeper</module>
+	<module>bds-hdfs</module>
+	<module>bds-hbase</module>
   </modules>
 </project>
