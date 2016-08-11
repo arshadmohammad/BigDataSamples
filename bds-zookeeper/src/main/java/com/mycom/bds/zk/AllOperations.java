@@ -26,8 +26,7 @@ public class AllOperations extends ZkClient {
         if (null != exists) {
             ZKUtil.deleteRecursive(zk, mainPath);
         }
-        zk.create(mainPath, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT);
+        zk.create(mainPath, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         createOP();
         cleanup();
     }
@@ -37,24 +36,18 @@ public class AllOperations extends ZkClient {
         System.out.println("operation " + op + " start.");
         String opNode = mainPath + "/" + op;
         createOpNode(opNode);
-        
-        zk.create(opNode+"/a", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT);
-        zk.create(opNode+"/a", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT_SEQUENTIAL);
-        zk.create(opNode+"/b", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.EPHEMERAL);
-        zk.create(opNode+"/b", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.EPHEMERAL_SEQUENTIAL);        
+
+        zk.create(opNode + "/a", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
+        zk.create(opNode + "/a", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT_SEQUENTIAL);
+        zk.create(opNode + "/b", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL);
+        zk.create(opNode + "/b", MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.EPHEMERAL_SEQUENTIAL);
 
         System.out.println("operation " + op + " end.");
 
     }
 
-    public void createOpNode(String opNode) throws KeeperException,
-            InterruptedException {
-        zk.create(opNode, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT);
+    public void createOpNode(String opNode) throws KeeperException, InterruptedException {
+        zk.create(opNode, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
     }
 
 }

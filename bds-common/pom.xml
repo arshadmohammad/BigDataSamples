@@ -1,14 +1,95 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.mycom.bds</groupId>
+        <artifactId>bds-main</artifactId>
+        <version>1.0.0</version>
+    </parent>
     <groupId>com.mycom.bds</groupId>
-    <artifactId>bds-main</artifactId>
+    <artifactId>bds-common</artifactId>
     <version>1.0.0</version>
-  </parent>
-  <groupId>com.mycom.bds</groupId>
-  <artifactId>bds-common</artifactId>
-  <version>1.0.0</version>
-  <name>bds-common</name>
+    <name>bds-common</name>
+    <properties>
+        <maven.executable>mvn</maven.executable>
+    </properties>
+    <build>
+    </build>
+    <profiles>
+        <profile>
+            <id>dist</id>
+            <activation>
+                <activeByDefault>false</activeByDefault>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.5.0</version>
+                        <executions>
+                            <execution>
+                                <id>build-recipes</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${maven.executable}</executable>
+                                    <workingDirectory>D:/gitHome/zookeeperForked/src/recipes</workingDirectory>
+                                    <arguments>
+                                        <argument>clean</argument>
+                                        <argument>package</argument>
+                                        <argument>-DskipTests</argument>
+                                        <argument>-Pdist</argument>
+                                    </arguments>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>windows-properties</id>
+            <activation>
+                <os>
+                    <family>windows</family>
+                </os>
+            </activation>
+            <properties>
+                <maven.executable>mvn.cmd.arshad</maven.executable>
+            </properties>
+        </profile>
+        <profile>
+            <id>a</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-antrun-plugin</artifactId>
+                        <version>1.8</version>
+                        <executions>
+                            <execution>
+                                <configuration>
+                                    <target>
+                                        <ant antfile="${basedir}/build.xml">
+                                            <property name="environment" value="${environment}"/>
+                                            <target name="a"/>
+                                        </ant>
+                                    </target>
+                                </configuration>
+                                <id>copy-contrib</id>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>run</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

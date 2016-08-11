@@ -8,8 +8,8 @@ import java.util.Date;
 import org.apache.zookeeper.ZooKeeper;
 
 public class MyZKUtils {
-    
-    private static DateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    private static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     /**
      * @param parent
@@ -21,7 +21,7 @@ public class MyZKUtils {
         ensureExists(file);
         String absolutePath = file.getAbsolutePath();
         absolutePath = absolutePath.replace("\\", "/");
-        System.out.println("path is "+absolutePath);
+        System.out.println("path is " + absolutePath);
         return absolutePath;
     }
 
@@ -30,20 +30,18 @@ public class MyZKUtils {
      */
     public static void ensureExists(File file) {
         if (!file.exists()) {
-            throw new RuntimeException("File '" + file.getAbsolutePath()
-                    + "' does not exist.");
+            throw new RuntimeException("File '" + file.getAbsolutePath() + "' does not exist.");
         }
     }
 
     public static byte[] data() {
         return "test date".getBytes();
     }
-    
-    public static void print(String message)
-    {
+
+    public static void print(String message) {
         String dateMessage = dateFormat.format(new Date());
-        System.out.println(dateMessage+"::"+message);
-        
+        System.out.println(dateMessage + "::" + message);
+
     }
 
     public static String getConnectedServer(ZooKeeper zk) {
@@ -57,7 +55,6 @@ public class MyZKUtils {
         if (-1 == indexOfSpace) {
             return result;
         }
-        return connectionString
-                .substring(indexOfRemoteserver, indexOfSpace + 1);
+        return connectionString.substring(indexOfRemoteserver, indexOfSpace + 1);
     }
 }

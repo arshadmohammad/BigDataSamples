@@ -46,25 +46,21 @@ public class ZkClient implements Watcher {
     }
 
     protected void configureSSL() {
-        System.setProperty("ssl.keyStore.location",
-                MyZKUtils.getPath(conf, "keystore"));
+        System.setProperty("ssl.keyStore.location", MyZKUtils.getPath(conf, "keystore"));
         System.setProperty("ssl.keyStore.password", "mypass");
-        System.setProperty("ssl.trustStore.location",
-                MyZKUtils.getPath(conf, "keystore"));
+        System.setProperty("ssl.trustStore.location", MyZKUtils.getPath(conf, "keystore"));
         System.setProperty("ssl.trustStore.password", "mypass");
 
     }
 
     protected void configureKerberos() {
-        System.setProperty("java.security.auth.login.config",
-                MyZKUtils.getPath(conf, "jaas.conf"));
-        System.setProperty("java.security.krb5.conf",
-                MyZKUtils.getPath(conf, "krb5.conf"));
+        System.setProperty("java.security.auth.login.config", MyZKUtils.getPath(conf, "jaas.conf"));
+        System.setProperty("java.security.krb5.conf", MyZKUtils.getPath(conf, "krb5.conf"));
         System.setProperty("sun.security.krb5.debug", "true");
     }
 
     protected void init() {
-        //conf = new File(ZkClient.class.getResource("/conf").getPath());
+        // conf = new File(ZkClient.class.getResource("/conf").getPath());
         conf = new File("src/main/resources/conf");
         MyZKUtils.ensureExists(conf);
     }
@@ -74,13 +70,10 @@ public class ZkClient implements Watcher {
         KeeperState state = we.getState();
         EventType type = we.getType();
         if (EventType.None == type) {
-            if (KeeperState.SyncConnected == state
-                    || KeeperState.ConnectedReadOnly == state) {
+            if (KeeperState.SyncConnected == state || KeeperState.ConnectedReadOnly == state) {
                 countDownLatch.countDown();
                 isConnected = true;
-                System.out
-                        .println(KeeperState.ConnectedReadOnly == state ? "Read-only connected"
-                                : "Connected");
+                System.out.println(KeeperState.ConnectedReadOnly == state ? "Read-only connected" : "Connected");
             } else if (KeeperState.Disconnected == state) {
                 /**
                  * This state is received for every ZooKeeper server disconnect
@@ -90,7 +83,7 @@ public class ZkClient implements Watcher {
             } else if (KeeperState.Expired == state) {
                 System.out.println("Expired, Reconnecting");
                 try {
-                    isConnected=false;
+                    isConnected = false;
                     cleanup();
                     connectZooKeeper();
                 } catch (IOException | InterruptedException e) {

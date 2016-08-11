@@ -32,32 +32,25 @@ public class ContinuousRunningZKClient extends ZkClient {
         if (null != exists) {
             ZKUtil.deleteRecursive(zk, mainPath);
         }
-        zk.create(mainPath, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT);
+        zk.create(mainPath, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         scheduleTask();
         Thread.currentThread().join();
         System.out.println("Exiting the task.");
     }
 
     private void scheduleTask() {
-        ScheduledExecutorService dataSetterScheduler = Executors
-                .newSingleThreadScheduledExecutor();
+        ScheduledExecutorService dataSetterScheduler = Executors.newSingleThreadScheduledExecutor();
         long period1 = 1;
-        dataSetterScheduler.scheduleAtFixedRate(new SetDataThread(this), 5,
-                period1, TimeUnit.SECONDS);
+        dataSetterScheduler.scheduleAtFixedRate(new SetDataThread(this), 5, period1, TimeUnit.SECONDS);
 
-        ScheduledExecutorService dataGetterScheduler = Executors
-                .newSingleThreadScheduledExecutor();
+        ScheduledExecutorService dataGetterScheduler = Executors.newSingleThreadScheduledExecutor();
         long period2 = 1;
-        dataGetterScheduler.scheduleAtFixedRate(new GetDataThread(this), 5,
-                period2, TimeUnit.SECONDS);
+        dataGetterScheduler.scheduleAtFixedRate(new GetDataThread(this), 5, period2, TimeUnit.SECONDS);
 
     }
 
-    public void createOpNode(String opNode) throws KeeperException,
-            InterruptedException {
-        zk.create(opNode, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE,
-                CreateMode.PERSISTENT);
+    public void createOpNode(String opNode) throws KeeperException, InterruptedException {
+        zk.create(opNode, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
     }
 
     class SetDataThread extends Thread {
@@ -76,13 +69,11 @@ public class ContinuousRunningZKClient extends ZkClient {
                     ZooKeeper zk2 = zkClient.zk;
                     Stat setData = zk2.setData(mainPath, data, -1);
                     if (null != setData) {
-                        String message1 = MyZKUtils.getConnectedServer(zk2)
-                                + "Data '" + new String(data)
+                        String message1 = MyZKUtils.getConnectedServer(zk2) + "Data '" + new String(data)
                                 + "' set successfully";
                         MyZKUtils.print(message1);
                     } else {
-                        String message2 = MyZKUtils.getConnectedServer(zk2)
-                                + "Failed to set data '" + new String(data)
+                        String message2 = MyZKUtils.getConnectedServer(zk2) + "Failed to set data '" + new String(data)
                                 + "'";
                         MyZKUtils.print(message2);
                     }
@@ -113,8 +104,7 @@ public class ContinuousRunningZKClient extends ZkClient {
                 try {
                     ZooKeeper zk2 = zkClient.zk;
                     byte[] data = zk2.getData(mainPath, false, null);
-                    String message = MyZKUtils.getConnectedServer(zk2)
-                            + "Got data '" + new String(data)
+                    String message = MyZKUtils.getConnectedServer(zk2) + "Got data '" + new String(data)
                             + "' successfully";
                     MyZKUtils.print(message);
 
