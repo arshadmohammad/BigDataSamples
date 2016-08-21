@@ -48,8 +48,8 @@ public class HdfsSample {
 		conf.set("dfs.ha.namenodes.mycluster", "nn1,nn2");
 		conf.set("dfs.namenode.rpc-address.mycluster.nn1", "192.168.1.3:9000");
 		conf.set("dfs.namenode.rpc-address.mycluster.nn2", "192.168.1.3:9001");
-		conf.set("dfs.namenode.http-address.mycluster.nn1", "50070");
-		conf.set("dfs.namenode.http-address.mycluster.nn2", "50071");
+		//conf.set("dfs.namenode.http-address.mycluster.nn1", "50070");
+		//conf.set("dfs.namenode.http-address.mycluster.nn2", "50071");
 		conf.set("dfs.client.failover.proxy.provider.mycluster", "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
 		
 		conf.set("io.file.buffer.size", "2048");

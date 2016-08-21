@@ -13,7 +13,7 @@ import org.apache.zookeeper.ZooKeeper;
 import com.mycom.bds.zk.util.MyZKUtils;
 
 public class ZkClient implements Watcher {
-    protected String connectionString = "192.168.1.3:2181,192.168.1.3:2182,192.168.1.3:2183";
+    protected String connectionString = "192.168.1.3:2181";
     protected int sessionTimeout = 4000;
     protected File conf;
     public ZooKeeper zk;
