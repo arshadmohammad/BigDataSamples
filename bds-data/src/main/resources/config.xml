@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <config>
-    <no-of-files>2</no-of-files>
-    <no-of-records-perfile>1000000</no-of-records-perfile>
+    <no-of-files>1</no-of-files>
+    <no-of-records-perfile>10000</no-of-records-perfile>
     <ggsn>10</ggsn>
     <apn>100</apn>
     <protocol-group>15</protocol-group>

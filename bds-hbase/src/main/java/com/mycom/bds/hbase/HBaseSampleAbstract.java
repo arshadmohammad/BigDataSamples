@@ -17,7 +17,7 @@ public abstract class HBaseSampleAbstract {
     }
 
     protected String getZKQuorum() {
-        return "192.168.1.3:2181,192.168.1.3:2182,192.168.1.3:2183";
+        return "10.243.139.213:2181";
     }
 
     protected String getHadoopHome() {

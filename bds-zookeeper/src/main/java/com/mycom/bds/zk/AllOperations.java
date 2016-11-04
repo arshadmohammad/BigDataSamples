@@ -28,6 +28,7 @@ public class AllOperations extends ZkClient {
         }
         zk.create(mainPath, MyZKUtils.data(), Ids.OPEN_ACL_UNSAFE, CreateMode.PERSISTENT);
         createOP();
+        Thread.sleep(Long.MAX_VALUE);
         cleanup();
     }
 

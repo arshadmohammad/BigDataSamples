@@ -52,7 +52,7 @@ public class HBaseSample extends HBaseSampleAbstract {
             HColumnDescriptor newColumn = new HColumnDescriptor("NEWCF");
             // newColumn.setCompactionCompressionType(Algorithm.GZ);
             newColumn.setMaxVersions(HConstants.ALL_VERSIONS);
-            admin.addColumnFamily(tableName, newColumn);
+            //admin.addColumnFamily(tableName, newColumn);
             admin.modifyTable(tableName, table);
         }
     }

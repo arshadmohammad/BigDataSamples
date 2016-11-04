@@ -35,11 +35,11 @@ public class DataUpload extends HBaseSampleAbstract {
     }
 
     protected String getZKQuorum() {
-        return "localhost:2181";
+        return "10.243.139.213";
     }
 
     private String getDataFilePattern() {
-        return "data1m1.csv";
+        return "data10.csv";
     }
 
     private File getDataFolder() {
