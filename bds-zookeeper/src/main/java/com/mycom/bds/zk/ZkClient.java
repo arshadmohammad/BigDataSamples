@@ -46,6 +46,7 @@ public class ZkClient implements Watcher {
     }
 
     protected void configureSSL() {
+    	System.setProperty("zookeeper.client.secure", "true");
         System.setProperty("ssl.keyStore.location", MyZKUtils.getPath(conf, "keystore"));
         System.setProperty("ssl.keyStore.password", "mypass");
         System.setProperty("ssl.trustStore.location", MyZKUtils.getPath(conf, "keystore"));
