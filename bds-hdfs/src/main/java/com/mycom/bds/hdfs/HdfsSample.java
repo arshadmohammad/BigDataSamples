@@ -11,19 +11,46 @@ import org.apache.hadoop.fs.LocatedFileStatus;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.hdfs.DistributedFileSystem;
+import org.apache.hadoop.security.UserGroupInformation;
 
 import com.mycom.bds.common.util.Util;
 
 public class HdfsSample {
 	private DistributedFileSystem dfs = null;
-	private Configuration conf = new Configuration();
+	private Configuration conf;
+	private File configFolder = new File("conf");
 	private Path sampleRootPath = new Path("/sample/books");
 
 	public static void main(String[] args) throws Exception {
 		HdfsSample hdfsSample = new HdfsSample();
-		hdfsSample.initHA();
-		hdfsSample.createContinuously();
+		hdfsSample.initConfig();
+		// hdfsSample.initHA();
+		hdfsSample.login();
+		//hdfsSample.createContinuously();
 		hdfsSample.listFiles();
+	}
+
+	private HdfsSample() {
+		conf = new Configuration();
+		if (!configFolder.exists()) {
+			throw new RuntimeException("Configuration location " + configFolder.getAbsolutePath() + "");
+		}
+		//System.setProperty("HADOOP_JAAS_DEBUG", "true");
+		System.setProperty("java.security.krb5.conf", getPath(configFolder, "krb5.conf"));
+		//System.setProperty("sun.security.krb5.debug", "true");
+
+	}
+
+	private void initConfig() throws IOException {
+		conf.addResource(new Path(getPath(configFolder, "core-site.xml")));
+		conf.addResource(new Path(getPath(configFolder, "hdfs-site.xml")));
+	}
+
+	private void login() throws IOException {
+		UserGroupInformation.setConfiguration(conf);
+		UserGroupInformation.loginUserFromKeytab("hdfs/volton@HADOOP.COM",
+				getPath(configFolder, "hadoop.keytab"));
+		dfs = (DistributedFileSystem) FileSystem.get(conf);
 	}
 
 	private void listFiles() throws FileNotFoundException, IOException {
@@ -31,49 +58,50 @@ public class HdfsSample {
 		while (listFiles.hasNext()) {
 			LocatedFileStatus type = listFiles.next();
 			System.out.println(type);
-			
+
 		}
 	}
 
 	public void init() throws IOException {
 		conf.set("fs.defaultFS", "hdfs://192.168.1.3:9001");
 		conf.set("io.file.buffer.size", "2048");
+		conf.set("hadoop.rpc.protection", "privacy");
 		System.setProperty("HADOOP_USER_NAME", "root");
 		dfs = (DistributedFileSystem) FileSystem.get(conf);
 	}
-	
+
 	public void initHA() throws IOException {
 		conf.set("fs.defaultFS", "hdfs://mycluster");
 		conf.set("dfs.nameservices", "mycluster");
 		conf.set("dfs.ha.namenodes.mycluster", "nn1,nn2");
 		conf.set("dfs.namenode.rpc-address.mycluster.nn1", "192.168.1.3:9000");
 		conf.set("dfs.namenode.rpc-address.mycluster.nn2", "192.168.1.3:9001");
-		//conf.set("dfs.namenode.http-address.mycluster.nn1", "50070");
-		//conf.set("dfs.namenode.http-address.mycluster.nn2", "50071");
-		conf.set("dfs.client.failover.proxy.provider.mycluster", "org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
-		
+		// conf.set("dfs.namenode.http-address.mycluster.nn1", "50070");
+		// conf.set("dfs.namenode.http-address.mycluster.nn2", "50071");
+		conf.set("dfs.client.failover.proxy.provider.mycluster",
+				"org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider");
+
 		conf.set("io.file.buffer.size", "2048");
-		System.setProperty("HADOOP_USER_NAME", "root");
+		// System.setProperty("HADOOP_USER_NAME", "root");
 		dfs = (DistributedFileSystem) FileSystem.get(conf);
 	}
-	
-	private void createContinuously() throws IllegalArgumentException, IOException {
-		long count=1;
-		while(true)
-		{
-			System.out.println("count="+count++);
-			System.out.println(Util.getTime()+ " start");
-			String uniquePath=UUID.randomUUID().toString();
-			Path path=new Path(sampleRootPath, uniquePath);
+
+	public void createContinuously() throws IllegalArgumentException, IOException {
+		long count = 1;
+		while (true) {
+			System.out.println("count=" + count++);
+			System.out.println(Util.getTime() + " start");
+			String uniquePath = UUID.randomUUID().toString();
+			Path path = new Path(sampleRootPath, uniquePath);
 			create(path);
-			System.out.println(Util.getTime()+ " end");
+			System.out.println(Util.getTime() + " end");
 		}
 	}
 
 	public void create() throws IllegalArgumentException, IOException {
 		create(sampleRootPath);
 	}
-	
+
 	private void create(Path parentPath) throws IllegalArgumentException, IOException {
 
 		boolean exists = dfs.exists(parentPath);
@@ -94,6 +122,29 @@ public class HdfsSample {
 			}
 			dfs.copyFromLocalFile(new Path(file.getAbsolutePath()), destFile);
 			System.out.println("File '" + file.getAbsolutePath() + "' copied to '" + destFile.toString() + "'");
+		}
+	}
+
+	/**
+	 * @param parent
+	 * @param fileName
+	 * @return file path with forward slash
+	 */
+	public static String getPath(File parent, String fileName) {
+		File file = new File(parent, fileName);
+		ensureExists(file);
+		String absolutePath = file.getAbsolutePath();
+		absolutePath = absolutePath.replace("\\", "/");
+		System.out.println("path is " + absolutePath);
+		return absolutePath;
+	}
+
+	/**
+	 * throws {@link RuntimeException} if file does not exist
+	 */
+	public static void ensureExists(File file) {
+		if (!file.exists()) {
+			throw new RuntimeException("File '" + file.getAbsolutePath() + "' does not exist.");
 		}
 	}
 }
