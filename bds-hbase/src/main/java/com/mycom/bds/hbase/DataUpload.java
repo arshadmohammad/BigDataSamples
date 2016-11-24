@@ -35,7 +35,7 @@ public class DataUpload extends HBaseSampleAbstract {
     }
 
     protected String getZKQuorum() {
-        return "10.243.139.213";
+        return "192.168.1.3:2181";
     }
 
     private String getDataFilePattern() {
@@ -60,7 +60,7 @@ public class DataUpload extends HBaseSampleAbstract {
     }
 
     private void uploadData() throws IOException {
-        try (Connection connection = ConnectionFactory.createConnection(config); Admin admin = connection.getAdmin()) {
+        try (Connection connection = ConnectionFactory.createConnection(conf); Admin admin = connection.getAdmin()) {
             // create table
             create(admin);
             // insert data into table
