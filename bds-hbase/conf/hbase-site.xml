@@ -44,5 +44,13 @@
 	<property>
 		<name>hbase.ipc.client.fallback-to-simple-auth-allowed</name>
 		<value>false</value>
-	</property>	
+	</property>
+	<property>
+		<name>hbase.regionserver.kerberos.principal</name>
+		<value>hbase/volton@HADOOP.COM</value>
+	</property>
+	<property>
+		<name>hbase.master.kerberos.principal</name>
+		<value>hbase/volton@HADOOP.COM</value>
+	</property>
 </configuration>
